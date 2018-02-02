@@ -196,17 +196,30 @@
   // установливаем ширину мага
   var wizardWidth = 70;
 
-  // высота мага зависит от ширины
-  var getWizardHeight = function (tempWizardWidth) {
-    return tempWizardWidth * 1.337;
+  /**
+   * Высчитывает высоту мага из ширины
+   * @param {number} wizardWidth - Ширина мага
+   * @returns {number} - Высота мага
+   */
+  var getWizardHeight = function (wizardWidth) {
+    return wizardWidth * 1.337;
   };
 
-  // центруем мага по серединке по оси Х
+  /**
+   * Получает стартовую координату Х из ширины экрана и мага
+   * @param {number} width - Ширина картинки
+   * @returns {number} - Координата Х стартового положения мага
+   */
   var getWizardX = function (width) {
     return (width / 2) - (wizardWidth / 2);
   };
 
   // ставим мага на 2/3 высоты над уровнем земли
+  /**
+   * Устанавливает мага на 2/3 высоты
+   * @param {number} height - Высота картинки
+   * @returns {number}
+   */
   var getWizardY = function (height) {
     return (height / 3 ) - getWizardHeight(wizardWidth);
   }
