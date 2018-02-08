@@ -214,11 +214,10 @@
     return (width / 2) - (wizardWidth / 2);
   };
 
-  // ставим мага на 2/3 высоты над уровнем земли
-  /**
+   /**
    * Устанавливает мага на 2/3 высоты
    * @param {number} height - Высота картинки
-   * @returns {number}
+   * @returns {number} - Координата Y стартового положения мага
    */
   var getWizardY = function (height) {
     return (height / 3 ) - getWizardHeight(wizardWidth);
