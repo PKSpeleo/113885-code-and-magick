@@ -41,7 +41,7 @@ var drawStatCloud = function (x, y, width, height, colour, ctx) {
 };
 /**
  * Функция написания текста построчно на облаке
- * @param {string) text - текст с разделителем
+ * @param {string} text - текст с разделителем
  * @param {number} x - координата Х где начинаем писать
  * @param {number} y - координата Y где начинаем писать
  * @param {string} colour - цвет текста
