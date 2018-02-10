@@ -97,7 +97,7 @@ window.renderStatistics = function (ctx, names, times) {
       canvas.fillStyle = CLOUD_TEXT_COLOUR;
       canvas.font = CLOUD_TEXT_STYLE;
       canvas.fillText(namesArr[i], x, yStartDraw + CLOUD_TEXT_HEIGHT_IN_PX);
-      canvas.fillText(Math.round(timesArr[i]), x, y - HISTOGRAM_TEXT_UP_OFFSET);
+      canvas.fillText(Math.round(timesArr[i]).toString(10), x, y - HISTOGRAM_TEXT_UP_OFFSET);
     }
   };
   // Рисуем тень
