@@ -1,31 +1,31 @@
 'use strict';
 // Переменные для облака
-var cloudInitialX = 100;
-var cloudInitialY = 10;
-var cloudWidth = 420;
-var cloudHeight = 270;
-var cloudColour = 'rgba(255, 255, 255, 1.0)';
+var CLOUD_INITIAL_X = 100;
+var CLOUD_INITIAL_Y = 10;
+var CLOUD_WIDTH = 420;
+var CLOUD_HEIGHT = 270;
+var CLOUD_COLOUR = 'rgba(255, 255, 255, 1.0)';
 // Переменные для тени
-var cloudShadowOffsetX = 10;
-var cloudShadowOffsetY = 10;
-var cloudShadowColour = 'rgba(0, 0, 0, 0.7)';
+var CLOUD_SHADOW_OFFSET_X = 10;
+var CLOUD_SHADOW_OFFSET_Y = 10;
+var CLOUD_SHADOW_COLOUR = 'rgba(0, 0, 0, 0.7)';
 // Переменные текста облака
-var cloudText = 'Ура вы победили!\nСписок результатов:';
-var cloudTextSepator = '\n';
-var cloudTextColour = '#000';
-var cloudTextStyle = '16px PT Mono';
-var cloudTextInitialX = 120;
-var cloudTextInitialY = 40;
-var cloudTextHeightInPX = 20;
+var CLOUD_TEXT = 'Ура вы победили!\nСписок результатов:';
+var CLOUD_TEXT_SEPARATOR = '\n';
+var CLOUD_TEXT_COLOUR = '#000';
+var CLOUD_TEXT_STYLE = '16px PT Mono';
+var CLOUD_TEXT_INITIAL_X = 120;
+var CLOUD_TEXT_INITIAL_Y = 40;
+var CLOUD_TEXT_HEIGHT_IN_PX = 20;
 // Переменные для гистораммы
-var histogramHeight = 150;
-var histogramColumnWidth = 40;
-var histogramColumnSpace = 50;
-var histogramInitialX = 120;
-var histogramInitialY = 100;
-var histogramMyColumnName = 'Вы';
-var histogramMyColumnColour = 'rgba(255, 0, 0, 1.0)';
-var histogramTetxUpOffset = 10;
+var HISTOGRAM_HEIGHT = 150;
+var HISTOGRAM_COLUMN_WIDTH = 40;
+var HISTOGRAM_COLUMN_SPACE = 50;
+var HISTOGRAM_INITIAL_X = 120;
+var HISTOGRAM_INITIAL_Y = 100;
+var HISTOGRAM_MY_COLUMN_NAME = 'Вы';
+var HISTOGRAM_MY_COLUMN_COLOUR = 'rgba(255, 0, 0, 1.0)';
+var HISTOGRAM_TEXT_UP_OFFSET = 10;
 /**
  * Функция рисования окна статистики
  * @param {number} x - координата Х
@@ -51,8 +51,8 @@ var drawStatCloud = function (x, y, width, height, colour, ctx) {
 var writeOnStatCloud = function (text, x, y, colour, font, ctx) {
   ctx.fillStyle = colour;
   ctx.font = font;
-  text.split(cloudTextSepator).forEach(function (textLine, index) {
-    ctx.fillText(textLine, x, y + cloudTextHeightInPX * index);
+  text.split(CLOUD_TEXT_SEPARATOR).forEach(function (textLine, index) {
+    ctx.fillText(textLine, x, y + CLOUD_TEXT_HEIGHT_IN_PX * index);
   });
 };
 /**
@@ -80,12 +80,12 @@ var drawStatColumnWithText = function (namesArr, timesArr, xStartDraw, yStartDra
     width = columnWidth;
     randomDigitFrom1to02 = (Math.random() * (1 - 0.2) + 0.2);
     histogramColumnColour = 'rgba(0, 0, 255, ' + randomDigitFrom1to02 + ')';
-    ctx.fillStyle = (namesArr[i] === histogramMyColumnName) ? histogramMyColumnColour : histogramColumnColour;
+    ctx.fillStyle = (namesArr[i] === HISTOGRAM_MY_COLUMN_NAME) ? HISTOGRAM_MY_COLUMN_COLOUR : histogramColumnColour;
     ctx.fillRect(x, y, width, height);
-    ctx.fillStyle = cloudTextColour;
-    ctx.font = cloudTextStyle;
-    ctx.fillText(namesArr[i], x, yStartDraw + cloudTextHeightInPX);
-    ctx.fillText(Math.round(timesArr[i]), x, y - histogramTetxUpOffset);
+    ctx.fillStyle = CLOUD_TEXT_COLOUR;
+    ctx.font = CLOUD_TEXT_STYLE;
+    ctx.fillText(namesArr[i], x, yStartDraw + CLOUD_TEXT_HEIGHT_IN_PX);
+    ctx.fillText(Math.round(timesArr[i]), x, y - HISTOGRAM_TEXT_UP_OFFSET);
   }
 };
 /**
@@ -101,17 +101,17 @@ var drawStatColumnWithText = function (namesArr, timesArr, xStartDraw, yStartDra
  */
 window.renderStatistics = function (ctx, names, times) {
   // Рисуем тень
-  drawStatCloud(cloudInitialX + cloudShadowOffsetX, cloudInitialY + cloudShadowOffsetY, cloudWidth, cloudHeight, cloudShadowColour, ctx);
+  drawStatCloud(CLOUD_INITIAL_X + CLOUD_SHADOW_OFFSET_X, CLOUD_INITIAL_Y + CLOUD_SHADOW_OFFSET_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_SHADOW_COLOUR, ctx);
   // Рисуем облако
-  drawStatCloud(cloudInitialX, cloudInitialY, cloudWidth, cloudHeight, cloudColour, ctx);
+  drawStatCloud(CLOUD_INITIAL_X, CLOUD_INITIAL_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_COLOUR, ctx);
   // Пишем текст на облаке
-  writeOnStatCloud(cloudText, cloudTextInitialX, cloudTextInitialY, cloudTextColour, cloudTextStyle, ctx);
+  writeOnStatCloud(CLOUD_TEXT, CLOUD_TEXT_INITIAL_X, CLOUD_TEXT_INITIAL_Y, CLOUD_TEXT_COLOUR, CLOUD_TEXT_STYLE, ctx);
   // Ищем максимальное время для масштабирования
   var maxOfTimes = Math.max.apply(null, times);
   // Вычислем пропорцию для гисторгамм
-  var historamStep = histogramHeight / maxOfTimes;
+  var histogramStep = HISTOGRAM_HEIGHT / maxOfTimes;
   // Рисуем гистограмму с подписями
-  drawStatColumnWithText(names, times, histogramInitialX, histogramInitialY + histogramHeight, historamStep, histogramColumnWidth, histogramColumnSpace, ctx);
+  drawStatColumnWithText(names, times, HISTOGRAM_INITIAL_X, HISTOGRAM_INITIAL_Y + HISTOGRAM_HEIGHT, histogramStep, HISTOGRAM_COLUMN_WIDTH, HISTOGRAM_COLUMN_SPACE, ctx);
 };
 
 
