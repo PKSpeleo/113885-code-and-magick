@@ -67,13 +67,19 @@ var writeOnStatCloud = function (text, x, y, colour, font, ctx) {
  * @param {object} ctx - канвас на котором рисуется игра
  */
 var drawStatColumnWithText = function (namesArr, timesArr, xStartDraw, yStartDraw, step, columnWidth, columnSpace, ctx) {
+  var x;
+  var y;
+  var height;
+  var width;
+  var randomDigitFrom1to02;
+  var histogramColumnColour;
   for (var i = 0; i < timesArr.length; i++) {
-    var x = xStartDraw + (columnWidth + columnSpace) * i;
-    var y = yStartDraw - timesArr[i] * step;
-    var height = timesArr[i] * step;
-    var width = columnWidth;
-    var randomDigitFrom1to02 = (Math.random() * (1 - 0.2) + 0.2);
-    var histogramColumnColour = 'rgba(0, 0, 255, ' + randomDigitFrom1to02 + ')';
+    x = xStartDraw + (columnWidth + columnSpace) * i;
+    y = yStartDraw - timesArr[i] * step;
+    height = timesArr[i] * step;
+    width = columnWidth;
+    randomDigitFrom1to02 = (Math.random() * (1 - 0.2) + 0.2);
+    histogramColumnColour = 'rgba(0, 0, 255, ' + randomDigitFrom1to02 + ')';
     ctx.fillStyle = (namesArr[i] === histogramMyColumnName) ? histogramMyColumnColour : histogramColumnColour;
     ctx.fillRect(x, y, width, height);
     ctx.fillStyle = cloudTextColour;
