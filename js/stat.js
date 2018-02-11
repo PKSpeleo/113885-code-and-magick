@@ -1,87 +1,4 @@
 'use strict';
-// Переменные для облака
-var cloudInitialX = 100;
-var cloudInitialY = 10;
-var cloudWidth = 420;
-var cloudHeight = 270;
-var cloudColour = 'rgba(255, 255, 255, 1.0)';
-// Переменные для тени
-var cloudShadowOffsetX = 10;
-var cloudShadowOffsetY = 10;
-var cloudShadowColour = 'rgba(0, 0, 0, 0.7)';
-// Переменные текста облака
-var cloudText = 'Ура вы победили!\nСписок результатов:';
-var cloudTextSepator = '\n';
-var cloudTextColour = '#000';
-var cloudTextStyle = '16px PT Mono';
-var cloudTextInitialX = 120;
-var cloudTextInitialY = 40;
-var cloudTextHeightInPX = 20;
-// Переменные для гистораммы
-var histogramHeight = 150;
-var histogramColumnWidth = 40;
-var histogramColumnSpace = 50;
-var histogramInitialX = 120;
-var histogramInitialY = 100;
-var histogramMyColumnName = 'Вы';
-var histogramMyColumnColour = 'rgba(255, 0, 0, 1.0)';
-var histogramTetxUpOffset = 10;
-/**
- * Функция рисования окна статистики
- * @param {number} x - координата Х
- * @param {number} y - координата У
- * @param {number} width - ширина
- * @param {number} height - высота
- * @param {string} colour - цвет с прозрачностью
- * @param {object} ctx - канвас на котором рисуется игра
- */
-var drawStatCloud = function (x, y, width, height, colour, ctx) {
-  ctx.fillStyle = colour;
-  ctx.fillRect(x, y, width, height);
-};
-/**
- * Функция написания текста построчно на облаке
- * @param {string} text - текст с разделителем
- * @param {number} x - координата Х где начинаем писать
- * @param {number} y - координата Y где начинаем писать
- * @param {string} colour - цвет текста
- * @param {string} font - шрифт текста
- * @param {object} ctx - канвас на котором рисуется игра
- */
-var writeOnStatCloud = function (text, x, y, colour, font, ctx) {
-  ctx.fillStyle = colour;
-  ctx.font = font;
-  text.split(cloudTextSepator).forEach(function (textLine, index) {
-    ctx.fillText(textLine, x, y + cloudTextHeightInPX * index);
-  });
-};
-/**
- * Функция рисования гистограмм с текстом
- * @param {array} namesArr - массив имен
- * @param {array} timesArr - массив времен
- * @param {number} xStartDraw - координата Х откуда начинаем рисовать гистограмму
- * @param {number} yStartDraw - координата Y откуда начинаем рисовать гистограмму
- * @param {number} step -
- * @param {number} columnWidth - ширина столбца
- * @param {number} columnSpace - расстояние между столбцами
- * @param {object} ctx - канвас на котором рисуется игра
- */
-var drawStatColumnWithText = function (namesArr, timesArr, xStartDraw, yStartDraw, step, columnWidth, columnSpace, ctx) {
-  for (var i = 0; i < timesArr.length; i++) {
-    var x = xStartDraw + (columnWidth + columnSpace) * i;
-    var y = yStartDraw - timesArr[i] * step;
-    var height = timesArr[i] * step;
-    var width = columnWidth;
-    var randomDigitFrom1to02 = (Math.random() * (1 - 0.2) + 0.2);
-    var histogramColumnColour = 'rgba(0, 0, 255, ' + randomDigitFrom1to02 + ')';
-    ctx.fillStyle = (namesArr[i] === histogramMyColumnName) ? histogramMyColumnColour : histogramColumnColour;
-    ctx.fillRect(x, y, width, height);
-    ctx.fillStyle = cloudTextColour;
-    ctx.font = cloudTextStyle;
-    ctx.fillText(namesArr[i], x, yStartDraw + cloudTextHeightInPX);
-    ctx.fillText(Math.round(timesArr[i]), x, y - histogramTetxUpOffset);
-  }
-};
 /**
  * Вызываться каждый раз когда игрок проходит уровень.
  * Чтобы успешно пройти уровень, надо выстрелить
@@ -94,18 +11,107 @@ var drawStatColumnWithText = function (namesArr, timesArr, xStartDraw, yStartDra
  * Время прохождения уровня задано в миллисекундах.
  */
 window.renderStatistics = function (ctx, names, times) {
+  // Переменные для облака
+  var CLOUD_INITIAL_X = 100;
+  var CLOUD_INITIAL_Y = 10;
+  var CLOUD_WIDTH = 420;
+  var CLOUD_HEIGHT = 270;
+  var CLOUD_COLOUR = 'rgba(255, 255, 255, 1.0)';
+  // Переменные для тени
+  var CLOUD_SHADOW_OFFSET_X = 10;
+  var CLOUD_SHADOW_OFFSET_Y = 10;
+  var CLOUD_SHADOW_COLOUR = 'rgba(0, 0, 0, 0.7)';
+  // Переменные текста облака
+  var CLOUD_TEXT = 'Ура вы победили!\nСписок результатов:';
+  var CLOUD_TEXT_SEPARATOR = '\n';
+  var CLOUD_TEXT_COLOUR = '#000';
+  var CLOUD_TEXT_STYLE = '16px PT Mono';
+  var CLOUD_TEXT_INITIAL_X = 120;
+  var CLOUD_TEXT_INITIAL_Y = 40;
+  var CLOUD_TEXT_HEIGHT_IN_PX = 20;
+  // Переменные для гистораммы
+  var HISTOGRAM_HEIGHT = 150;
+  var HISTOGRAM_COLUMN_WIDTH = 40;
+  var HISTOGRAM_COLUMN_SPACE = 50;
+  var HISTOGRAM_INITIAL_X = 120;
+  var HISTOGRAM_INITIAL_Y = 100;
+  var HISTOGRAM_MY_COLUMN_NAME = 'Вы';
+  var HISTOGRAM_MY_COLUMN_COLOUR = 'rgba(255, 0, 0, 1.0)';
+  var HISTOGRAM_TEXT_UP_OFFSET = 10;
+  /**
+   * Функция рисования окна статистики
+   * @param {number} x - координата Х
+   * @param {number} y - координата У
+   * @param {number} width - ширина
+   * @param {number} height - высота
+   * @param {string} colour - цвет с прозрачностью
+   * @param {object} canvas - канвас на котором рисуется игра
+   */
+  var drawStatCloud = function (x, y, width, height, colour, canvas) {
+    canvas.fillStyle = colour;
+    canvas.fillRect(x, y, width, height);
+  };
+  /**
+   * Функция написания текста построчно на облаке
+   * @param {string} text - текст с разделителем
+   * @param {number} x - координата Х где начинаем писать
+   * @param {number} y - координата Y где начинаем писать
+   * @param {string} colour - цвет текста
+   * @param {string} font - шрифт текста
+   * @param {object} canvas - канвас на котором рисуется игра
+   */
+  var writeOnStatCloud = function (text, x, y, colour, font, canvas) {
+    canvas.fillStyle = colour;
+    canvas.font = font;
+    text.split(CLOUD_TEXT_SEPARATOR).forEach(function (textLine, index) {
+      canvas.fillText(textLine, x, y + CLOUD_TEXT_HEIGHT_IN_PX * index);
+    });
+  };
+  /**
+   * Функция рисования гистограмм с текстом
+   * @param {array} namesArr - массив имен
+   * @param {array} timesArr - массив времен
+   * @param {number} xStartDraw - координата Х откуда начинаем рисовать гистограмму
+   * @param {number} yStartDraw - координата Y откуда начинаем рисовать гистограмму
+   * @param {number} step -
+   * @param {number} columnWidth - ширина столбца
+   * @param {number} columnSpace - расстояние между столбцами
+   * @param {object} canvas - канвас на котором рисуется игра
+   */
+  var drawStatColumnWithText = function (namesArr, timesArr, xStartDraw, yStartDraw, step, columnWidth, columnSpace, canvas) {
+    var x;
+    var y;
+    var height;
+    var width;
+    var randomDigitFrom1to02;
+    var histogramColumnColour;
+    for (var i = 0; i < timesArr.length; i++) {
+      x = xStartDraw + (columnWidth + columnSpace) * i;
+      y = yStartDraw - timesArr[i] * step;
+      height = timesArr[i] * step;
+      width = columnWidth;
+      randomDigitFrom1to02 = (Math.random() * (1 - 0.2) + 0.2);
+      histogramColumnColour = 'rgba(0, 0, 255, ' + randomDigitFrom1to02 + ')';
+      canvas.fillStyle = (namesArr[i] === HISTOGRAM_MY_COLUMN_NAME) ? HISTOGRAM_MY_COLUMN_COLOUR : histogramColumnColour;
+      canvas.fillRect(x, y, width, height);
+      canvas.fillStyle = CLOUD_TEXT_COLOUR;
+      canvas.font = CLOUD_TEXT_STYLE;
+      canvas.fillText(namesArr[i], x, yStartDraw + CLOUD_TEXT_HEIGHT_IN_PX);
+      canvas.fillText(Math.round(timesArr[i]).toString(10), x, y - HISTOGRAM_TEXT_UP_OFFSET);
+    }
+  };
   // Рисуем тень
-  drawStatCloud(cloudInitialX + cloudShadowOffsetX, cloudInitialY + cloudShadowOffsetY, cloudWidth, cloudHeight, cloudShadowColour, ctx);
+  drawStatCloud(CLOUD_INITIAL_X + CLOUD_SHADOW_OFFSET_X, CLOUD_INITIAL_Y + CLOUD_SHADOW_OFFSET_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_SHADOW_COLOUR, ctx);
   // Рисуем облако
-  drawStatCloud(cloudInitialX, cloudInitialY, cloudWidth, cloudHeight, cloudColour, ctx);
+  drawStatCloud(CLOUD_INITIAL_X, CLOUD_INITIAL_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_COLOUR, ctx);
   // Пишем текст на облаке
-  writeOnStatCloud(cloudText, cloudTextInitialX, cloudTextInitialY, cloudTextColour, cloudTextStyle, ctx);
+  writeOnStatCloud(CLOUD_TEXT, CLOUD_TEXT_INITIAL_X, CLOUD_TEXT_INITIAL_Y, CLOUD_TEXT_COLOUR, CLOUD_TEXT_STYLE, ctx);
   // Ищем максимальное время для масштабирования
   var maxOfTimes = Math.max.apply(null, times);
   // Вычислем пропорцию для гисторгамм
-  var historamStep = histogramHeight / maxOfTimes;
+  var histogramStep = HISTOGRAM_HEIGHT / maxOfTimes;
   // Рисуем гистограмму с подписями
-  drawStatColumnWithText(names, times, histogramInitialX, histogramInitialY + histogramHeight, historamStep, histogramColumnWidth, histogramColumnSpace, ctx);
+  drawStatColumnWithText(names, times, HISTOGRAM_INITIAL_X, HISTOGRAM_INITIAL_Y + HISTOGRAM_HEIGHT, histogramStep, HISTOGRAM_COLUMN_WIDTH, HISTOGRAM_COLUMN_SPACE, ctx);
 };
 
 
